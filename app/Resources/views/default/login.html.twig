@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div id="login-form" class="well">
+        {% if error %}
+            <div class="alert alert-danger col-sm-2 col-sm-offset-10">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-3 well">
+                <form action="{{ path('login') }}" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="username" class="control-label col-sm-4">Username:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label col-sm-4">Password:</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="password" name="_password" />
+                        </div>
+                    </div>
+                        <input type="hidden" name="_target_path" value="/secret" />
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-3">
+                            <button type="submit" class="btn btn-default">login</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <img src="/login-image" />
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{# empty Twig template #}
