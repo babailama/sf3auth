@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
 /**
  * Description of ApiKeyAuthenticator
@@ -24,8 +25,20 @@ use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterfa
  */
 class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
 {
+    protected $httpUtils;
+
+    public function __construct(HttpUtils $httpUtils)
+    {
+        $this->httpUtils = $httpUtils;
+    }
+    
      public function createToken(Request $request, $providerKey)
     {
+         
+        $targetUrl = '/secret';
+        if (!$this->httpUtils->checkRequestPath($request, $targetUrl)) {
+            return;
+        }
         // look for an apikey query parameter
         $apiKey = $request->query->get('apikey');
 
@@ -51,7 +64,7 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
         return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
     }
 
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
+     public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
     {
         if (!$userProvider instanceof ApiKeyUserProvider) {
             throw new \InvalidArgumentException(
@@ -65,9 +78,19 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
         $apiKey = $token->getCredentials();
         $username = $userProvider->getUsernameForApiKey($apiKey);
 
+        // User is the Entity which represents your user
+        $user = $token->getUser();
+        if ($user instanceof User) {
+            return new PreAuthenticatedToken(
+                $user,
+                $apiKey,
+                $providerKey,
+                $user->getRoles()
+            );
+        }
+
         if (!$username) {
-            // CAUTION: this message will be returned to the client
-            // (so don't put any un-trusted messages / error strings here)
+            // this message will be returned to the client
             throw new CustomUserMessageAuthenticationException(
                 sprintf('API Key "%s" does not exist.', $apiKey)
             );

@@ -36,7 +36,7 @@ class ApiKeyUserProvider implements UserProviderInterface
         // but in this example, the token is sent in each request,
         // so authentication can be stateless. Throwing this exception
         // is proper to make things stateless
-        throw new UnsupportedUserException();
+        return $user;
     }
 
     public function supportsClass($class)
