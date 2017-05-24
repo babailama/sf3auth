@@ -18,6 +18,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
 
+use Symfony\Component\Debug\Debug;
+
 /**
  * Description of ApiKeyAuthenticator
  *
@@ -26,24 +28,24 @@ use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterfa
 class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
 
     public function createToken(Request $request, $providerKey) {
-
+        Debug::enable();
         // look for an apikey query parameter
-        $apiKey = $request->query->get('apikey');
+        $apikey = $request->query->get('apikey');
         $phone = $request->query->get('phone');
-
+        
         // or if you want to use an "apikey" header, then do something like this:
         // $apiKey = $request->headers->get('apikey');
 
-        if (!$apiKey || !$phone) {
+        if (!$apikey) {
             throw new BadCredentialsException();
-
-            // or to just skip api key authentication
-            // return null;
         }
-
-        return new PreAuthenticatedToken(
-                'anon.',array('apiKey' => $apiKey, 'phone' => $phone), $providerKey
-        );
+        if (!$phone) {
+            throw new BadCredentialsException();
+        }
+        $cred = array('apikey' => $apikey, 'phone' => $phone,);
+        require __DIR__.'/vendor/autoload.php';
+        dump($cred);
+        return new PreAuthenticatedToken('anon.',$cred, $providerKey);
     }
 
     public function supportsToken(TokenInterface $token, $providerKey) {
@@ -66,7 +68,7 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
         $user = $token->getUser();
         if ($user instanceof User) {
             return new PreAuthenticatedToken(
-                    $user, array('apiKey' => $cred['apiKey'], 'phone' => $cred['phone']), $providerKey, $user->getRoles()
+                    $user, array('apikey' => $cred['apikey'], 'phone' => $cred['phone']), $providerKey, $user->getRoles()
             );
         }
 
@@ -80,7 +82,7 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
         $user = $userProvider->loadUserByUsername($username);
 
         return new PreAuthenticatedToken(
-                $user, array('apiKey' => $cred['apiKey'], 'phone' => $cred['phone']), $providerKey, $user->getRoles()
+                $user, array('apikey' => $cred['apikey'], 'phone' => $cred['phone']), $providerKey, $user->getRoles()
         );
     }
 

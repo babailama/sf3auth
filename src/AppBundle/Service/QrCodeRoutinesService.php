@@ -53,7 +53,7 @@ class QrCodeRoutinesService extends Controller {
         $this->em->flush();
     }
     
-    public function setSessionId($tokenid) {
+    public function getSessionId($tokenid) {
         $token = $this->em->getRepository('AppBundle\\Entity\\QrToken')->findOneBy(array('token' => $tokenId));
         return $token->getSessionid();
     }

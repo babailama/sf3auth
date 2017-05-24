@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\WebUser;
 
-class ApiKeyUserProvider implements UserProviderInterface {
+class ApiKeyUserProvider implements UserProviderInterface  {
 
     private $em;
 
@@ -21,14 +21,14 @@ class ApiKeyUserProvider implements UserProviderInterface {
     public function getUsernameForApiKey($cred) {
         // Look up the username based on the token in the database, via
         // an API call, or do something entirely different
-        $apiKey = $cred['apiKey'];
+        $apikey = $cred['apikey'];
         $phone = $cred['phone'];
         $user = $this->em
-                ->getRepository('AppBundle:WebUser')
+                ->getRepository('AppBundle\\Entity\\WebUser')
                 ->findOneBy(array('phone' => $phone));
 
         if (!$user) {
-            throw $this->createNotFoundException(
+            throw new \InvalidArgumentException(
                     'No user found '
             );
         }
@@ -39,7 +39,7 @@ class ApiKeyUserProvider implements UserProviderInterface {
 
     public function loadUserByUsername($username) {
         $user = $this->em
-                ->getRepository('AppBundle:WebUser')
+                ->getRepository('AppBundle\\Entity\\WebUser')
                 ->findOneBy(array('username' => $username));
         return $user;
     }
