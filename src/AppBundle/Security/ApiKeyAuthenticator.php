@@ -43,8 +43,6 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
             throw new BadCredentialsException();
         }
         $cred = array('apikey' => $apikey, 'phone' => $phone,);
-        require __DIR__.'/vendor/autoload.php';
-        dump($cred);
         return new PreAuthenticatedToken('anon.',$cred, $providerKey);
     }
 
