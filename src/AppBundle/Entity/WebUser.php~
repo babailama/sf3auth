@@ -15,12 +15,15 @@ namespace AppBundle\Entity;
  */
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="webuser")
  */
-class WebUser implements UserInterface {
+class WebUser implements UserInterface, EquatableInterface, \Serializable {
 
     /**
      * @ORM\Id
@@ -37,13 +40,23 @@ class WebUser implements UserInterface {
      */
     private $email;
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
+     */
+    private $salt = '00eec7e9ef638b3e3bdb56160f692a129c6b9d95907edd342a0bab31209fa6ab';
+    /**
+     * @ORM\Column(type="string", unique=true )
      */
     private $phone;
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;    
 
     public function getRoles() {
         return array('ROLE_USER');
@@ -55,6 +68,7 @@ class WebUser implements UserInterface {
     
     public function getSalt()
     {   
+        return $this->salt;
     }
     public function eraseCredentials()
     {
@@ -74,8 +88,12 @@ class WebUser implements UserInterface {
     function getPhone() {
         return $this->phone;
     }
+    
+    function setSalt($salt) {
+        $this->salt = $salt;
+    }
 
-    function setId($id) {
+        function setId($id) {
         $this->id = $id;
     }
 
@@ -93,5 +111,60 @@ class WebUser implements UserInterface {
 
     function setPassword($password) {
         $this->password = $password;
+    }
+    function getPlainPassword() {
+        return $this->plainPassword;
+    }
+
+    function setPlainPassword($plainPassword) {
+        $this->plainPassword = $plainPassword;
+    }
+
+        
+    public function isEqualTo(UserInterface $user)
+    {
+        if (!$user instanceof WebUser) {
+            return false;
+        }
+
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->salt !== $user->getSalt()) {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->phone,
+            $this->email,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->phone,
+            $this->email,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
     }
 }

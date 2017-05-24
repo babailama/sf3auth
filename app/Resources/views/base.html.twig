@@ -3,17 +3,19 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block javascripts %}
+            {% javascripts  
+                'js/jquery.min.js'                
+                'js/bootstrap.min.js'
+                'js/cookieroutines.js'
+            %}
+            <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
         {% stylesheets 
             'css/bootstrap.min.css' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
-        {% block javascripts %}
-            {% javascripts  
-                'js/bootstrap.min.js'
-                'js/jquery.min.js'  %}
-            <script src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>

@@ -1,4 +1,7 @@
 {% extends 'base.html.twig' %}
+
+
+
 {% block body %}
     <div id="login-form" class="well">
         {% if error %}
@@ -21,7 +24,7 @@
                             <input type="password" class="form-control" id="password" name="_password" />
                         </div>
                     </div>
-                        <input type="hidden" name="_target_path" value="/secret" />
+                    <input type="hidden" name="_target_path" value="/secret" />
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-3">
                             <button type="submit" class="btn btn-default">login</button>
@@ -30,9 +33,39 @@
                 </form>
             </div>
             <div class="col-sm-4">
-                <img src="/login-image" />
+                <img src="/login-image?tokenid={{ tokenid }}" />
             </div>
         </div>
     </div>
+    <script >
+        function onAjaxSuccess(data, textStatus, qXHR) {
+            alert(textStatus);
+        }
+        ;
+
+        function onAjaxError(jqXHR, textStatus, errorThrown) {
+            setTimeout(
+                    function ()
+                    {
+                        getAuth();
+                    }, 5000);
+        }
+        ;
+
+        function getAuth() {
+            $.ajax({url: "/qrcode?token={{ tokenid }}",
+                timeout: 20000,
+                success: onAjaxSuccess,
+                error: onAjaxError
+            })
+        }
+        ;
+
+        $(document).ready(function () {
+            getAuth();
+        });
+    </script>
+
+    <div id="demo"></div>
 {% endblock %}
 {# empty Twig template #}

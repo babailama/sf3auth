@@ -3,3 +3,6 @@ app:
     type: annotation
 logout:
     path: /logout
+user_registration:
+    path:     /register
+    defaults: { _controller: AppBundle:Registration:register }

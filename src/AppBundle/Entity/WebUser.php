@@ -16,6 +16,8 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -40,7 +42,7 @@ class WebUser implements UserInterface, EquatableInterface, \Serializable {
     /**
      * @ORM\Column(type="string")
      */
-    private $salt;
+    private $salt = '00eec7e9ef638b3e3bdb56160f692a129c6b9d95907edd342a0bab31209fa6ab';
     /**
      * @ORM\Column(type="string", unique=true )
      */
@@ -50,12 +52,11 @@ class WebUser implements UserInterface, EquatableInterface, \Serializable {
      */
     private $password;
 
-    function __construct($username, $email, $phone, $password) {
-        $this->username = $username;
-        $this->email = $email;
-        $this->phone = $phone;
-        $this->password = $password;
-    }
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;    
 
     public function getRoles() {
         return array('ROLE_USER');
@@ -111,7 +112,15 @@ class WebUser implements UserInterface, EquatableInterface, \Serializable {
     function setPassword($password) {
         $this->password = $password;
     }
-    
+    function getPlainPassword() {
+        return $this->plainPassword;
+    }
+
+    function setPlainPassword($plainPassword) {
+        $this->plainPassword = $plainPassword;
+    }
+
+        
     public function isEqualTo(UserInterface $user)
     {
         if (!$user instanceof WebUser) {

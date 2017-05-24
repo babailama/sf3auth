@@ -25,7 +25,13 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
+        qrcode:
+            pattern: ^/api
+            stateless: false
+            simple_preauth:
+                authenticator: apikey_authenticator
+            provider: api_key_user_provider
+            context: myapp
         main:
             pattern: ^/
             anonymous: ~
@@ -43,14 +49,7 @@ security:
                 path:   /logout
                 target: /
             context: myapp
-        qrcode:
-            pattern: ^/api
-            stateless: false
-            simple_preauth:
-                authenticator: apikey_authenticator
-            provider: api_key_user_provider
-            context: myapp
             
     access_control:
         - { path: ^/secret, roles: ROLE_USER }
-        #- { path: ^/api, roles: ROLE_USER }
+        - { path: ^/api, roles: ROLE_USER }

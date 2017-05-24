@@ -1,16 +1,13 @@
+{# empty Twig template #}
 {% extends 'base.html.twig' %}
 
 {% block body %}
     <div id="wrapper">
         <div id="container">
-            <div id="welcome">
-                <h1><span>Welcome to</span> Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}</h1>
-            </div>
 
             <div id="status">
                 <p>
-                    Your application is now ready. You can start working on it at:
-                    <code>{{ base_dir }}</code>
+                    Api section
                 </p>
             </div>
 
@@ -19,11 +16,10 @@
             </div>
 
             <div id="next">
-                <a href="/api/get?apikey="> api section</a>
+                <a href="/logout"> logout</a>
             </div>
-
+<code>{{ phpsessid }}</code>
         </div>
     </div>
 {% endblock %}
-
 

@@ -7,45 +7,43 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 
-class WebLoginController extends Controller
-{
-    
+
+class WebLoginController extends Controller {
+
     /**
      * @Route("/login", name="login")
      * 
      */
     public function loginAction(Request $request) {
-        
-        $authenticationUtils = $this->get('security.authentication_utils');
 
+        $authenticationUtils = $this->get('security.authentication_utils');
+        $qr = $this->container->get('app.qrcode_routines');
+        $token = $qr->generateToken();
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
+        $tokenId = $token->getToken();
         return $this->render('default/login.html.twig', array(
                     'last_username' => $lastUsername,
                     'error' => $error,
+                    'tokenid' => $tokenId,
         ));
     }
-    
-     /**
+
+    /**
      * @Route("/login-image", name="login-image")
      */
-    public function loginImageAction() {
+    public function loginImageAction(Request $request) {
         // we need to be sure ours script does not output anything!!!
         // otherwise it will break up PNG binary!
-
         ob_start();
-
-        // here DB request or some processing
-        $codeText = date('l jS \of F Y h:i:s A');
-
+        $tokenId = $request->query->get('tokenid');
         // end of processing here
         $debugLog = ob_get_contents();
         ob_end_clean();
-        return \PHPQRCode\QRcode::png($codeText);
+        return \PHPQRCode\QRcode::png($tokenId);
     }
 
 }
