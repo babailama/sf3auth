@@ -29,7 +29,7 @@ class WebLoginController extends Controller {
                     'last_username' => $lastUsername,
                     'error' => $error,
                     'tokenid' => $tokenId,
-                    'url' => 'https://sf3auth-babailama.c9users.io/api?apikey='.$tokenId.'&phone=333222333',
+                    'phone' => '333222333',
         ));
     }
 
@@ -45,6 +45,22 @@ class WebLoginController extends Controller {
         $debugLog = ob_get_contents();
         ob_end_clean();
         return \PHPQRCode\QRcode::png($tokenId);
+    }
+    
+    /**
+     * @Route("/login-image-test", name="login-image-test")
+     */
+    public function loginImageTestAction(Request $request) {
+        // we need to be sure ours script does not output anything!!!
+        // otherwise it will break up PNG binary!
+        ob_start();
+        $tokenId = $request->query->get('tokenid');
+        $phone = $request->query->get('phone');
+        // end of processing here
+        $debugLog = ob_get_contents();
+        $url = 'https://sf3auth-babailama.c9users.io/api?apikey='.$tokenId.'&phone=333222333';
+        ob_end_clean();
+        return \PHPQRCode\QRcode::png($url);
     }
 
 }
