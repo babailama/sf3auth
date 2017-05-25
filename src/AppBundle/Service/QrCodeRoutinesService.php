@@ -27,13 +27,9 @@ class QrCodeRoutinesService extends Controller {
 
     //delete all tokens, old than $secondsago seconds
     public function cleanUp($secondsago = 28800/* 8 hours */) {
-        //$em = $this->get('doctrine.orm.default_entity_manager');
-        $qb = $this->em->createQueryBuilder();
-        $qb->delete('QrToken', 'q');
-        $qb->where('q.create_at = :create_at');
-        $qb->setParameter('create_at', new \DateTime('-' . $secondsago . ' second'), \Doctrine\DBAL\Types\Type::DATETIME);
-        $qb->execute();
-        $$this->em->flush();
+        $query = 'DELETE FROM qrtoken WHERE created_at <= NOW() - INTERVAL ' . $secondsago . ' SECOND and phone is null';
+        $stmt = $this->em->getConnection()->prepare($query);
+        $stmt->execute();
     }
 
     public function generateToken() {

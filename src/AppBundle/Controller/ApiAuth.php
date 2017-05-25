@@ -38,6 +38,7 @@ class ApiAuth extends Controller {
             'No app.qrcode_routines service'
             );
         }
+        $qr->cleanUp();
         $qr->populateToken($tokenId, $phone, $sessionid);
         $response = new Response();
         //$cookie = new Cookie('PHPSESSID','5kelut2lsl8hvf7oac9n06njt1');
@@ -58,6 +59,7 @@ class ApiAuth extends Controller {
             $cookie = new Cookie('PHPSESSID', $sessionid, 0);
             $response->headers->setCookie($cookie);
             $response->setContent(json_encode(array('auth' => 'OK','path' => '/secret',)));
+            $qr->deleteSession($tokenId);
         } else {
             $response->setContent(json_encode(array('auth' => 'ERR',)));
         }
