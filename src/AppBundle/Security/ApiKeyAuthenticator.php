@@ -28,7 +28,6 @@ use Symfony\Component\Debug\Debug;
 class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
 
     public function createToken(Request $request, $providerKey) {
-        Debug::enable();
         // look for an apikey query parameter
         $apikey = $request->query->get('apikey');
         $phone = $request->query->get('phone');

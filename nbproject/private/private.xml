@@ -2,21 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/xampp/sf3auth/app/config/services.yml</file>
-            <file>file:/D:/xampp/sf3auth/src/AppBundle/Security/ApiKeyAuthenticator.php</file>
-            <file>file:/D:/xampp/sf3auth/app/config/config_dev.yml</file>
-            <file>file:/D:/xampp/sf3auth/src/AppBundle/Security/ApiKeyUserProvider.php</file>
-            <file>file:/D:/xampp/sf3auth/src/AppBundle/Controller/DefaultController.php</file>
-            <file>file:/D:/xampp/sf3auth/app/config/config.yml</file>
-            <file>file:/D:/xampp/sf3auth/app/AppKernel.php</file>
-            <file>file:/D:/xampp/sf3auth/src/AppBundle/Controller/WebLoginController.php</file>
-            <file>file:/D:/xampp/sf3auth/src/AppBundle/AppBundle.php</file>
-            <file>file:/D:/xampp/sf3auth/src/AppBundle/Service/QrCodeRoutinesService.php</file>
-            <file>file:/D:/xampp/sf3auth/app/config/security.yml</file>
-            <file>file:/D:/xampp/sf3auth/web/app_dev.php</file>
-            <file>file:/D:/xampp/sf3auth/src/AppBundle/Controller/ApiAuth.php</file>
-            <file>file:/D:/xampp/sf3auth/src/AppBundle/Entity/WebUser.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

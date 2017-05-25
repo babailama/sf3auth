@@ -39,7 +39,16 @@
     </div>
     <script >
         function onAjaxSuccess(data, textStatus, qXHR) {
-            alert(textStatus);
+            if (data.auth === 'ERR'){
+                setTimeout(
+                    function ()
+                    {
+                        getAuth();
+                    }, 5000);
+            } ;
+            if (data.auth === 'OK'){
+                window.location.href = data.path;
+            };
         }
         ;
 
@@ -57,9 +66,8 @@
                 timeout: 20000,
                 success: onAjaxSuccess,
                 error: onAjaxError
-            })
-        }
-        ;
+            });
+        };
 
         $(document).ready(function () {
             getAuth();

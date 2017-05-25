@@ -44,7 +44,7 @@ class QrToken {
     private $sessionid;
     
     /**
-     * @ORM\Column(name="created_at", type="datetime", options={"default": 0}, nullable=true)
+     * @ORM\Column(name="created_at", type="datetime",  nullable=true)
      */
     private $created_at;
     
