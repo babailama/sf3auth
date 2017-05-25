@@ -43,6 +43,10 @@ class QrCodeRoutinesService extends Controller {
     }
 
     public function populateToken($tokenid, $phone, $sessionid) {
+        $token = $this->em->getRepository('AppBundle\\Entity\\QrToken')->findOneBy(array('phone' => $phone));
+        if ($token) {
+            $this->em->remove($token);
+        }
         $token = $this->em->getRepository('AppBundle\\Entity\\QrToken')->findOneBy(array('token' => $tokenid));
         $token->setPhone($phone);
         $token->setSessionid($sessionid);

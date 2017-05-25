@@ -35,20 +35,29 @@
             <div class="col-sm-4">
                 <img src="/login-image?tokenid={{ tokenid }}" />
             </div>
+            <div class="col-sm-4">
+                <button class="btn" data-toggle="collapse" data-target="#demo">testing</button>
+                <div id="demo" class="collapse">
+                    <img src="/login-image?tokenid={{ url }}" />
+                </div> 
+            </div>
         </div>
+
     </div>
     <script >
         function onAjaxSuccess(data, textStatus, qXHR) {
-            if (data.auth === 'ERR'){
+            if (data.auth === 'ERR') {
                 setTimeout(
-                    function ()
-                    {
-                        getAuth();
-                    }, 5000);
-            } ;
-            if (data.auth === 'OK'){
+                        function ()
+                        {
+                            getAuth();
+                        }, 5000);
+            }
+            ;
+            if (data.auth === 'OK') {
                 window.location.href = data.path;
-            };
+            }
+            ;
         }
         ;
 
@@ -67,7 +76,8 @@
                 success: onAjaxSuccess,
                 error: onAjaxError
             });
-        };
+        }
+        ;
 
         $(document).ready(function () {
             getAuth();

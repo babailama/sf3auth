@@ -29,6 +29,7 @@ class WebLoginController extends Controller {
                     'last_username' => $lastUsername,
                     'error' => $error,
                     'tokenid' => $tokenId,
+                    'url' => 'https://sf3auth-babailama.c9users.io/api?apikey='.$tokenId.'&phone=333222333',
         ));
     }
 
