@@ -15,4 +15,6 @@ A Symfony project created on May 23, 2017, 8:30 am.
 
 
   - [application apk](doc/QRCodeAuth.apk)
-  - [application aia](doc/QRCodeAuth.aia)
+  - [application aia для импорта в "MIT App Inventor 2"](doc/QRCodeAuth.aia)
+  
+  ![mobile app block schema](doc/app-schema.jpg)
