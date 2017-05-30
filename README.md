@@ -14,5 +14,5 @@ A Symfony project created on May 23, 2017, 8:30 am.
  
 
 
-  - [application apk](/babailama/sf3auth/doc/QRCodeAuth.apk)
-  - [application aia](/babailama/sf3auth/doc/QRCodeAuth.aia)
+  - [application apk](doc/QRCodeAuth.apk)
+  - [application aia](doc/QRCodeAuth.aia)
